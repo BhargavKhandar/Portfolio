@@ -13,3 +13,7 @@ Route::get('/', function () {
         'projects' => Project::all(),
     ]);
 });
+
+Route::get('/react', function () {
+    return view('react');
+});
