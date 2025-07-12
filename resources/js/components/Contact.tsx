@@ -22,12 +22,28 @@ const Contact = () => {
     e.preventDefault();
     setFormStatus('sending');
     
-    // Simulate form submission
-    setTimeout(() => {
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to send message');
+      }
+
       setFormStatus('success');
       setFormData({ name: '', email: '', subject: '', message: '' });
       setTimeout(() => setFormStatus('idle'), 5000);
-    }, 2000);
+    } catch (error) {
+      console.error('Error:', error);
+      setFormStatus('error');
+      setTimeout(() => setFormStatus('idle'), 5000);
+    }
   };
 
   const contactInfo = [
@@ -55,14 +71,14 @@ const Contact = () => {
     {
       icon: <Github className="w-6 h-6" />,
       name: 'GitHub',
-      url: 'https://github.com/DineshNakum',
-      handle: '@DineshNakum'
+      url: 'https://github.com/BhargavKhandar',
+      handle: '@BhargavKhandar'
     },
     {
       icon: <Linkedin className="w-6 h-6" />,
       name: 'LinkedIn',
       url: 'https://www.linkedin.com/in/bhargav-khandar-9207a1265/',
-      handle: '/in/bhargav-khandar'
+      handle: '@bhargav-khandar'
     }
   ];
 
